@@ -3,40 +3,29 @@ pipeline {
 
     stages {
 
-        stage('Clone Repository') {
-            steps {
-                echo "Cloning repository..."
-                git 'https://github.com/prashamdocs151203/Jenkins/new/main'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
-                echo "Installing Python dependencies"
-                sh 'pip install flask numpy scikit-learn'
+                echo 'Installing dependencies...'
+                sh 'pip install -r requirements.txt'
             }
         }
 
         stage('Run ML Application') {
             steps {
-                echo "Starting ML service"
-                sh 'python ml_app.py &'
+                echo 'Running ML app...'
+                sh 'python app.py'
             }
         }
 
         stage('Test API') {
             steps {
-                echo "Testing ML health endpoint"
-                sh 'curl http://localhost:5002/ml/health'
+                echo 'Testing API...'
+                sh 'pytest'
             }
         }
-
     }
 
     post {
-        success {
-            echo 'Pipeline executed successfully!'
-        }
         failure {
             echo 'Pipeline failed!'
         }
