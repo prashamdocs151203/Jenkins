@@ -6,14 +6,14 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing dependencies...'
-                sh 'sh 'python3 -m pip install -r requirements.txt''
+                sh 'python3 -m pip install -r requirements.txt'
             }
         }
 
         stage('Run ML Application') {
             steps {
-                echo 'Running ML app...'
-                sh 'python app.py'
+                echo 'Running ML application...'
+                sh 'python3 app.py'
             }
         }
 
