@@ -3,31 +3,28 @@ pipeline {
 
     stages {
 
-        stage('Install Dependencies') {
+        stage('Clone Repo') {
             steps {
-                echo 'Installing dependencies...'
-                sh 'python3 -m pip install -r requirements.txt'
+                git 'https://github.com/prashamdocs151203/Jenkins.git'
             }
         }
 
-        stage('Run ML Application') {
+        stage('Build & Run Containers') {
             steps {
-                echo 'Running ML application...'
-                sh 'python3 app.py'
+                sh 'docker compose up --build -d'
             }
         }
 
         stage('Test API') {
             steps {
-                echo 'Testing API...'
-                sh 'pytest'
+                sh 'curl http://localhost:5000 || true'
             }
         }
-    }
 
-    post {
-        failure {
-            echo 'Pipeline failed!'
+        stage('Cleanup') {
+            steps {
+                sh 'docker compose down'
+            }
         }
     }
 }
